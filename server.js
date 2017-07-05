@@ -15,19 +15,12 @@ app.set('view engine', 'handlebars');
 //DATABASE
 var db = spicedPg('postgres:postgres:password@localhost:5432/signaturesDB');
 
-db.query('SELECT * FROM signatures').then(function(results) {
-    console.log('command: ', results.command);
-    console.log('rows: ', results.rows);
-}).catch(function(err) {
-    console.log(err);
-});
-
 //COOKIES
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get('/', function(req, res) {
-    res.redirect('/petition');
+    res.redirect('/petition')
 });
 
 app.get('/petition', function(req, res) {
@@ -36,7 +29,7 @@ app.get('/petition', function(req, res) {
     }
     else {
         res.render('petition', {
-            layout: 'main-layout-template',
+            layout: 'main-layout-template'
         });
     }
 });
@@ -47,8 +40,7 @@ app.post('/petition', function(req, res) {
     }).catch(function(err){
         console.log(err);
     });
-    if (req.body.accept) {
-        res.cookie('acceptedCookie', 'NomNomNom');
+    if (res.cookie('acceptedCookie', 'NomNomNom')) {
         res.redirect('/thanks');
     }
 });
