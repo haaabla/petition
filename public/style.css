@@ -55,6 +55,11 @@ a {
     color: #4A4E55;
 }
 
+.seesignees {
+    text-decoration: underline;
+    color: blue;
+}
+
 /* LOGO */
 h4 {
     font-size: 1.8em;

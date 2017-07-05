@@ -34,6 +34,7 @@ app.get('/petition', function(req, res) {
     }
 });
 
+//POST TO DATABASE & SET COOKIE
 app.post('/petition', function(req, res) {
     db.query("INSERT INTO signatures (firstname, lastname, signature) VALUES ($1,$2,$3)",[req.body.firstname,req.body.lastname,req.body.signature]).then(function(result){
         console.log(result.rows);
