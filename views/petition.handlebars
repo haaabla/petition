@@ -1,14 +1,14 @@
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
-<form id="petitionform" name="data" method="post">
+<form id="data" name="data" method="post">
     Firstname:<br>
-    <input type="text" name="firstname" value="Mickey" required>
+    <input id="firstname"type="text" name="firstname" value="" required>
     <br>Lastname:<br>
-    <input type="text" name="lastname" value="Mouse" required>
+    <input id="lastname" type="text" name="lastname" value="" required>
     <br>
-    <!-- <input type="checkbox" name="accept" required>ACCEPT -->
+    <input id="clear" type="button" value="clear">
     <input id="hiddencanvas" type="hidden" name="signature">
     <canvas id="canvas" width="500" height="250" style="border: 1px dotted red">
     </canvas>
-    <input type="submit" value="Submit">
+    <input id="button" type="submit" value="Submit">
 </form>
