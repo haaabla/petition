@@ -14,9 +14,8 @@ $('#canvas').on('mousedown', function(e){
     });
 });
 
-$('#clear').on('click', function(e){
-    console.log('cleeeearing');
+$('#clear').on('click', () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 });
-
-$('#button').css('opacity', '0.2');
+//
+// $('#button').css('opacity', '0.2');

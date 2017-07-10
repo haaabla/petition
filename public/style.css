@@ -25,6 +25,13 @@ p {
     max-width: 800px;
 }
 
+/* WARNING MESSAGE */
+.warning {
+    font-size: 3em;
+    color: red;
+    padding: 10px;
+}
+
 /* NAV */
 nav {
     width: 100%;
@@ -47,9 +54,12 @@ li {
     font-family: 'Merriweather';
 }
 
-a {
+.logo h1, .logo {
     text-decoration: none;
-    color: #4A4E55;
+}
+
+a {
+    color: blue;
 }
 
 .seesignees {
