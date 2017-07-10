@@ -1,10 +1,24 @@
 <h2>Signees come here ;P</h2>
-<div class="signee-list">
-    <ul>
-        {{#each listSignees}}
-            <li>
-                <h3>{{first_name}} {{last_name}}</h3>
-            </li>
-        {{/each}}
-    </ul>
-</div>
+<ul class="signee-list">
+    {{#each list}}
+        <li>
+            {{#if url}}
+                <a href="http://{{url}}" target="_blank">{{first_name}} {{last_name}}</a>
+            {{else}}
+                {{first_name}} {{last_name}}
+            {{/if}}
+            {{#if age}}
+                    ( {{age}}
+            {{else}}
+                {{#if city}}
+                    (<a href="/signees/{{city}}">{{city}}</a>)
+                {{/if}}
+            {{/if}}
+            {{#if city}},
+                <a href="/signees/{{city}}">{{city}}</a>)
+            {{else}}
+                {{#if age}}){{/if}}
+            {{/if}}
+        </li>
+    {{/each}}
+</ul>

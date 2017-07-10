@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.redirect('/petition')
+    res.redirect('/petition');
 });
 
 app.get('/petition', (req, res) => {
@@ -51,27 +51,6 @@ app.get('/petition', (req, res) => {
         layout: 'main-layout-template'
     });
 });
-
-// app.use((req, res, next) => {
-//     if (req.session.user) {
-//         if (req.url != '/register' && req.url != '/login') {
-//             res.redirect('/register');
-//         }
-//         else {
-//             next();
-//         }
-//     }
-//     else {
-//         if (req.session.user) {
-//             if (req.url != '/register' && req.url != '/login') {
-//                 res.redirect('/register');
-//             }
-//             else {
-//                 next();
-//             }
-//         }
-//     }
-// });
 
 //POST TO DATABASE & SET COOKIE
 app.post('/petition', (req, res) => {
@@ -98,7 +77,7 @@ app.post('/register', (req, res) => {
                 password: hashed,
                 id: id
             };
-            res.redirect('/petition');
+            res.redirect('/onboard');
         }).catch((err) => {
             console.log(err);
             res.render('layouts/register', {
@@ -113,6 +92,15 @@ app.post('/register', (req, res) => {
 app.get('/onboard', (req, res) => {
     res.render('layouts/onboard', {
         layout: 'main-layout-template'
+    });
+});
+
+app.post('/onboard', (req, res) => {
+    db.query("INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1,$2,$3,$4)", [req.session.user.id, req.body.age, req.body.city, req.body.url]).then(() => {
+        res.redirect('petition');
+    }).catch(function(err){
+        console.log(err);
+        res.redirect('petition');
     });
 });
 
@@ -169,15 +157,21 @@ app.get('/thanks', (req, res) => {
 
 //SIGNEES
 app.get('/signees', (req, res) => {
-    db.query('SELECT first_name, last_name FROM signatures').then((results) => {
+    db.query("SELECT signatures.first_name, signatures.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM signatures LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id").then((results) => {
         res.render('layouts/signees', {
             layout: 'main-layout-template',
-            listSignees: results.rows
+            list: results.rows
         });
     }).catch((err) => {
         console.log(err);
     });
+});
 
+//SIGNEE CITY
+app.get('/signee-city', (req, res) => {
+    res.render('layouts/signee-city', {
+        layout: 'main-layout-template'
+    });
 });
 
 app.listen(8080, () => console.log('-- Port: 8080 Initialised --'));

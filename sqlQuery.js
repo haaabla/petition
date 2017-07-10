@@ -12,16 +12,14 @@ exports.insertUser = (data, hashed) => {
     });
 };
 
-exports.insertIdToSig = (id) => {
-    return new Promise((resolve, reject) => {
-        db.query("SELECT users.id FROM users JOIN signatures ON users.id = signatures.user_id").then((results) => {
-            console.log('we made it through');
-            console.log(results);
-            resolve('hejsan');
-        }).catch((err) => {
-            reject(err);
-        });
-    });
-};
-
-// SELECT users.id FROM users JOIN signatures ON users.id = signatures.user_id;
+// exports.insertIdToSig = (id) => {
+//     return new Promise((resolve, reject) => {
+//         db.query("SELECT users.id FROM users JOIN signatures ON users.id = signatures.user_id").then((results) => {
+//             console.log('we made it through');
+//             console.log(results);
+//             resolve('hejsan');
+//         }).catch((err) => {
+//             reject(err);
+//         });
+//     });
+// };
