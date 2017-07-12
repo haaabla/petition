@@ -114,8 +114,13 @@ router.route('/login')
 /********************** PETITION **********************/
 router.route('/petition')
     .get((req, res) => {
-        res.render('petition', {
-            layout: 'main-layout-template'
+        db.query("SELECT first_name, last_name FROM users WHERE id=" + req.session.user.id)
+        .then((results) => {
+            res.render('layouts/petition', {
+                layout: 'main-layout-template',
+                firstname: req.session.user.firstname,
+                lastname: req.session.user.lastname
+            });
         });
     })
 
@@ -161,24 +166,20 @@ router.route('/profile/edit')
         });
     })
 
-        .post((req, res) => {
-            sqlQuery.updateProfile(req.body, req.session.user.id)
-            .then((message) => {
-                console.log(message);
-            }).catch((error) => {
-                console.log(error);
+    .post((req, res) => {
+        password.hashPassword(req.body.password).then((hashed) => {
+            sqlQuery.updateUser(req.body, req.session.user.id, hashed)
+            .then(() => {
+                sqlQuery.updateOptionals(req.body, req.session.user.id)
+                .then(() => {
+                    res.redirect('/thanks');
+                }).catch((error) => {
+                    console.log('this is logging the error: ', error);
+                });
             });
-        })
-
-        .post((req, res) => {
-            sqlQuery.updateOptionals(req.body, req.session.user.id)
-            .then((message) => {
-                console.log(message);
-            }).catch((error) => {
-                console.log(error);
-            });
-        })
-    ;
+        });
+    })
+;
 
 
 /********************** SIGNEES **********************/
@@ -195,14 +196,6 @@ router.route('/signees')
         });
     })
 ;
-
-// router.route('/signee-city')
-//     .get((req, res) => {
-//         res.render('layouts/signee-city', {
-//             layout: 'main-layout-template'
-//         });
-//     })
-// ;
 
 router.get('/', (req, res) => {
     res.redirect('/petition');

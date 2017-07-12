@@ -38,11 +38,11 @@ exports.signPetition = (id, data) => {
     });
 };
 
-exports.updateProfile = (data, id) => {
+exports.updateUser = (data, id, hashed) => {
     return new Promise((resolve, reject) => {
-        var query = "UPDATE signatures SET first_name=$1, last_name=$2 WHERE user_id=$3";
+        var query = "UPDATE users SET first_name=$1, last_name=$2, email=$3, password=$4 WHERE id=$5";
 
-        db.query(query, [data.firstname, data.lastname, id]).then((message) => {
+        db.query(query, [data.firstname, data.lastname, data.email, hashed, id]).then((message) => {
             console.log(message);
             resolve('success');
         }).catch((error) => {
