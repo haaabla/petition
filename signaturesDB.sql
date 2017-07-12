@@ -3,8 +3,6 @@ DROP TABLE IF EXISTS signatures;
 CREATE TABLE signatures (
     id SERIAL primary key,
     user_id INTEGER,
-    first_name VARCHAR(255) not null,
-    last_name VARCHAR(255) not null,
     timestamp TIMESTAMP default current_TIMESTAMP,
     signature TEXT
 );

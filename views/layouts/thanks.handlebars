@@ -1,9 +1,13 @@
 <p>Thanks for signing the petition!</p>
 
-<a class="thanks-links" href="/signees">View all signees</a>
+<a class="thanks-links" href="/signees">View {{count}} signees</a>
 
 <a class="thanks-links" href="/profile/edit">Edit your profile</a>
 
-<a class="thanks-links" href="/petition">Delete Signature</a>
+<form action="/delete" method="POST">
+    <button id="delete-sig" class="thanks-links">Delete Signature</button>
+</form>
 
 <img src="{{sigImg}}" alt="">
+
+<script src="canvas.js" charset="utf-8"></script>

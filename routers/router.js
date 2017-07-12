@@ -62,6 +62,9 @@ router.route('/onboard')
     })
 
     .post((req, res) => {
+        if (!req.body.age.length) {
+            req.body.age = null;
+        }
         req.session.user.age = req.body.age;
         req.session.user.city = req.body.city;
         req.session.user.url = req.body.url;
@@ -114,19 +117,12 @@ router.route('/login')
 /********************** PETITION **********************/
 router.route('/petition')
     .get((req, res) => {
-        db.query("SELECT first_name, last_name FROM users WHERE id=" + req.session.user.id)
-        .then((results) => {
-            res.render('layouts/petition', {
-                layout: 'main-layout-template',
-                firstname: req.session.user.firstname,
-                lastname: req.session.user.lastname
-            });
+        res.render('layouts/petition', {
+            layout: 'main-layout-template'
         });
     })
 
     .post((req, res) => {
-        req.session.user.firstname = req.body.firstname;
-        req.session.user.lastname = req.body.lastname;
         sqlQuery.signPetition(req.session.user.id, req.body)
         .then((message) => {
             console.log(message);
@@ -140,11 +136,27 @@ router.route('/petition')
 /********************** THANKS **********************/
 router.route('/thanks')
     .get((req, res) => {
-        db.query('SELECT signature FROM signatures WHERE user_id = $1', [req.session.user.id]).then((results) => {
-            res.render('layouts/thanks', {
-                layout: 'main-layout-template',
-                sigImg: results.rows[0].signature
+        sqlQuery.countSignees().then((resultcount) => {
+            db.query('SELECT signature FROM signatures WHERE user_id = $1', [req.session.user.id])
+            .then((results) => {
+                res.render('layouts/thanks', {
+                    layout: 'main-layout-template',
+                    sigImg: results.rows[0].signature,
+                    count: resultcount
+                });
             });
+        });
+    })
+;
+
+/********************** DELETE SIGNATURE **********************/
+router.route('/delete')
+    .post((req, res) => {
+        sqlQuery.deleteSignature(req.session.user.id)
+        .then((message) => {
+            res.redirect('/petition');
+        }).catch((error) => {
+            console.log(error);
         });
     })
 ;
@@ -152,8 +164,8 @@ router.route('/thanks')
 /********************** EDIT PROFILE **********************/
 router.route('/profile/edit')
     .get((req, res) => {
-        db.query("SELECT signatures.first_name, signatures.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM signatures LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id")
-        .then((results) => {
+        db.query("SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM users LEFT JOIN user_profiles ON user_profiles.user_id = users.id")
+        .then(() => {
             res.render('layouts/edit', {
                 layout: 'main-layout-template',
                 firstname: req.session.user.firstname,
@@ -174,18 +186,17 @@ router.route('/profile/edit')
                 .then(() => {
                     res.redirect('/thanks');
                 }).catch((error) => {
-                    console.log('this is logging the error: ', error);
+                    console.log(error);
                 });
             });
         });
     })
 ;
 
-
 /********************** SIGNEES **********************/
 router.route('/signees')
     .get((req, res) => {
-        db.query("SELECT signatures.first_name, signatures.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM signatures LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id")
+        db.query("SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM users INNER JOIN user_profiles ON user_profiles.user_id = users.id INNER JOIN signatures ON user_profiles.user_id = signatures.user_id")
         .then((results) => {
             res.render('layouts/signees', {
                 layout: 'main-layout-template',
@@ -193,6 +204,32 @@ router.route('/signees')
             });
         }).catch((err) => {
             console.log(err);
+        });
+    })
+;
+
+// router.route('/signees')
+//     .get((req, res) => {
+//         db.query("SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM users LEFT JOIN user_profiles ON user_profiles.user_id = users.id")
+//         .then((results) => {
+//             res.render('layouts/signees', {
+//                 layout: 'main-layout-template',
+//                 list: results.rows
+//             });
+//         }).catch((err) => {
+//             console.log(err);
+//         });
+//     })
+// ;
+
+/********************** SIGNEES BY CITY **********************/
+router.route('/signees/:city')
+    .get((req, res) => {
+        sqlQuery.signeesByCity(req.params.city).then((results) => {
+            res.render('layouts/signee-by-city', {
+                layout: 'main-layout-template',
+                signees: results
+            });
         });
     })
 ;

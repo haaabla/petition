@@ -1,8 +1,6 @@
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 
-console.log('outside JS');
-
 $('#canvas').on('mousedown', function(e){
     e.preventDefault();
     context.moveTo(e.offsetX, e.offsetY);
@@ -19,5 +17,3 @@ $('#canvas').on('mousedown', function(e){
 $('#clear').on('click', () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
 });
-
-// $('#button').css('opacity', '0.2');
