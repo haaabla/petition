@@ -1,6 +1,7 @@
-<p>Edit Profile :D</p>
+<p>Edit Profile</p>
 
-<form id="data" name="data" method="post">
+<form id="data" name="data" method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input id="firstname"type="text" name="firstname" placeholder="First Name" value="{{firstname}}">
     <input id="lastname" type="text" name="lastname" placeholder="Last Name" value="{{lastname}}">
     <input id="email" type="email" name="email" placeholder="Email" value="{{email}}">

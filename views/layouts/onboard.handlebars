@@ -1,6 +1,7 @@
 <p>Onboard</p>
 
-<form id="onboard" name="onboard" method="post">
+<form id="onboard" name="onboard" method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input data="age" type="text" name="age" placeholder="Age">
     <input data="city" type="text" name="city" placeholder="City">
     <input data="url" type="text" name="url" placeholder="Website">

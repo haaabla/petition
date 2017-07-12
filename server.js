@@ -4,6 +4,7 @@ const hb = require('express-handlebars');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
+const csrf = require('csurf');
 const router = require('./routers/router.js');
 
 app.engine('handlebars', hb());
@@ -11,6 +12,7 @@ app.set('view engine', 'handlebars');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(csrf({ cookie: true }));
 
 /********************** SETTING SESSION **********************/
 app.use(cookieSession({

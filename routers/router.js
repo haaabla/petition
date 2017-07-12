@@ -3,7 +3,7 @@ const router = express.Router();
 const sqlQuery = require('../public/js/sqlQuery.js');
 const password = require('../public/js/password.js');
 const spicedPg = require('spiced-pg');
-const db = spicedPg('postgres:postgres:password@localhost:5432/signaturesDB');
+const db = spicedPg(process.env.DATABASE_URL || 'postgres:postgres:password@localhost:5432/signaturesDB');
 const bcrypt = require('bcryptjs');
 
 /********************** RE-DIRECTING **********************/
@@ -15,7 +15,10 @@ router.use((req, res, next) => {
             next();
         }
     } else {
-        if (req.url == '/register' || req.url == '/login') {
+        // if (req.url == '/petition') {
+        //     res.redirect('/thanks');
+        // }
+        if (req.url == '/register' || req.url == '/login' || req.url == '/petition') {
             res.redirect('/thanks');
         } else {
             next();
@@ -27,7 +30,8 @@ router.use((req, res, next) => {
 router.route('/register')
     .get((req, res) => {
         res.render('layouts/register', {
-            layout: 'main-layout-template'
+            layout: 'main-layout-template',
+            csrfToken: req.csrfToken()
         });
     })
 
@@ -46,7 +50,8 @@ router.route('/register')
                 console.log(error);
                 res.render('layouts/register', {
                     layout: 'main-layout-template',
-                    error: 'This email already exists :('
+                    error: 'This email already exists :(',
+                    csrfToken: req.csrfToken()
                 });
             });
         });
@@ -57,7 +62,8 @@ router.route('/register')
 router.route('/onboard')
     .get((req, res) => {
         res.render('layouts/onboard', {
-            layout: 'main-layout-template'
+            layout: 'main-layout-template',
+            csrfToken: req.csrfToken()
         });
     })
 
@@ -79,11 +85,13 @@ router.route('/onboard')
 router.route('/login')
     .get((req, res) => {
         res.render('layouts/login', {
-            layout: 'main-layout-template'
+            layout: 'main-layout-template',
+            csrfToken: req.csrfToken()
         });
     })
 
     .post((req,res) => {
+        console.log('hello we are in login.POST');
         db.query("SELECT id, first_name, last_name, email, password FROM users WHERE email=$1",[req.body.email])
         .then(function(userInfo){
             bcrypt.compare(req.body.password, userInfo.rows[0].password, function(err, doesMatch) {
@@ -118,14 +126,14 @@ router.route('/login')
 router.route('/petition')
     .get((req, res) => {
         res.render('layouts/petition', {
-            layout: 'main-layout-template'
+            layout: 'main-layout-template',
+            csrfToken: req.csrfToken()
         });
     })
 
     .post((req, res) => {
         sqlQuery.signPetition(req.session.user.id, req.body)
-        .then((message) => {
-            console.log(message);
+        .then(() => {
             res.redirect('/thanks');
         }).catch((error) => {
             console.log(error);
@@ -168,6 +176,7 @@ router.route('/profile/edit')
         .then(() => {
             res.render('layouts/edit', {
                 layout: 'main-layout-template',
+                csrfToken: req.csrfToken(),
                 firstname: req.session.user.firstname,
                 lastname: req.session.user.lastname,
                 email: req.session.user.email,
@@ -207,20 +216,6 @@ router.route('/signees')
         });
     })
 ;
-
-// router.route('/signees')
-//     .get((req, res) => {
-//         db.query("SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM users LEFT JOIN user_profiles ON user_profiles.user_id = users.id")
-//         .then((results) => {
-//             res.render('layouts/signees', {
-//                 layout: 'main-layout-template',
-//                 list: results.rows
-//             });
-//         }).catch((err) => {
-//             console.log(err);
-//         });
-//     })
-// ;
 
 /********************** SIGNEES BY CITY **********************/
 router.route('/signees/:city')

@@ -1,6 +1,7 @@
 <p>Sign Petition</p>
 
 <form id="data" name="data" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input id="hiddencanvas" type="hidden" name="signature">
     <canvas id="canvas" width="500" height="250" style="border: 1px dotted red">
     </canvas>

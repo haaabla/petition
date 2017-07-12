@@ -1,6 +1,7 @@
 <p>Register</p>
 <div class="warning"><h3>{{error}}</div>
 <form id="data" name="data" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input type="text" name="firstname" placeholder="First Name">
     <input type="text" name="lastname" placeholder="Last Name">
     <input type="email" name="email" placeholder="Email">

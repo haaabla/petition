@@ -5,9 +5,12 @@
 <a class="thanks-links" href="/profile/edit">Edit your profile</a>
 
 <form action="/delete" method="POST">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button id="delete-sig" class="thanks-links">Delete Signature</button>
 </form>
 
 <img src="{{sigImg}}" alt="">
 
 <script src="canvas.js" charset="utf-8"></script>
+
+<p> SHARE </p>

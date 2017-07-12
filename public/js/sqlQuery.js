@@ -1,5 +1,5 @@
 const spicedPg = require('spiced-pg');
-const db = spicedPg('postgres:postgres:password@localhost:5432/signaturesDB');
+const db = spicedPg(process.env.DATABASE_URL || 'postgres:postgres:password@localhost:5432/signaturesDB');
 
 exports.insertUser = (data, hashed) => {
     return new Promise((resolve, reject) => {

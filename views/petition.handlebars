@@ -1,6 +1,7 @@
 <p>Sign Petition</p>
 
 <form id="data" name="data" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input type="text" name="firstname" placeholder="First Name" value="{{firstname}}">
     <input type="text" name="lastname" placeholder="Last Name" value="{{lastname}}">
     <input id="hiddencanvas" type="hidden" name="signature">
