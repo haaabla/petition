@@ -18,7 +18,7 @@ exports.insertProfile = (id, data) => {
         db.query(query, [id, data.age, data.city, data.url]).then(() => {
             resolve('success');
         }).catch((error) => {
-            console.log(error);
+            console.log('this is the insert Error', error);
             reject(error);
         });
     });

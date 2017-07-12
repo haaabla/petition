@@ -14,11 +14,12 @@ router.use((req, res, next) => {
         } else {
             next();
         }
-    } else {
-        // if (req.url == '/petition') {
-        //     res.redirect('/thanks');
-        // }
-        if (req.url == '/register' || req.url == '/login' || req.url == '/petition') {
+    }
+    else if (req.url == '/petition' && req.session.user.signed == true) {
+        res.redirect('/thanks');
+    }
+    else {
+        if (req.url == '/register' || req.url == '/login') {
             res.redirect('/thanks');
         } else {
             next();
@@ -43,7 +44,8 @@ router.route('/register')
                     lastname: req.body.lastname,
                     email: req.body.email,
                     password: hashed,
-                    id: id
+                    id: id,
+                    signed: false
                 };
                 res.redirect('/onboard');
             }).catch((error) => {
@@ -68,9 +70,9 @@ router.route('/onboard')
     })
 
     .post((req, res) => {
-        if (!req.body.age.length) {
-            req.body.age = null;
-        }
+        // if (!req.body.age.length) {
+        //     req.body.age = null;
+        // }
         req.session.user.age = req.body.age;
         req.session.user.city = req.body.city;
         req.session.user.url = req.body.url;
@@ -91,7 +93,6 @@ router.route('/login')
     })
 
     .post((req,res) => {
-        console.log('hello we are in login.POST');
         db.query("SELECT id, first_name, last_name, email, password FROM users WHERE email=$1",[req.body.email])
         .then(function(userInfo){
             bcrypt.compare(req.body.password, userInfo.rows[0].password, function(err, doesMatch) {
@@ -134,6 +135,8 @@ router.route('/petition')
     .post((req, res) => {
         sqlQuery.signPetition(req.session.user.id, req.body)
         .then(() => {
+            req.session.user.signed = true;
+            console.log(req.session.user);
             res.redirect('/thanks');
         }).catch((error) => {
             console.log(error);
