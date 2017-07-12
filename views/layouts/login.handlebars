@@ -1,12 +1,9 @@
-<h2>Login</h2>
+<p>Login</p>
 
 <div class="warning"><h3>{{incorrect}}</div>
 
 <form id="login" name="login" method="post">
-    Email:<br>
-    <input id="email"type="email" name="email" value="" required>
-    <br>Password:<br>
-    <input id="password" type="password" name="password" value="" required>
-    <br>
+    <input type="text" name="email" value="Email" onfocus="value=''">
+    <input type="text" name="password" value="Password" onfocus="value=''">
     <input id="button" type="submit" value="Submit">
 </form>

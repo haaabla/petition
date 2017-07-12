@@ -1,12 +1,8 @@
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Sign Petition</p>
 
-<form id="data" name="data" method="post">
-    Firstname:<br>
-    <input id="firstname"type="text" name="firstname" value="" required>
-    <br>Lastname:<br>
-    <input id="lastname" type="text" name="lastname" value="" required>
-    <br>
-    <input id="clear" type="button" value="clear">
+<form id="data" name="data" method="post" action="/petition">
+    <input type="text" name="firstname" value="First Name" onfocus="value=''">
+    <input type="text" name="lastname" value="Last Name" onfocus="value=''">
     <input id="hiddencanvas" type="hidden" name="signature">
     <canvas id="canvas" width="500" height="250" style="border: 1px dotted red">
     </canvas>

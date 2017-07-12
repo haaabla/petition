@@ -24,3 +24,44 @@ exports.insertProfile = (id, data) => {
         });
     });
 };
+
+exports.signPetition = (id, data) => {
+    return new Promise((resolve, reject) => {
+        var query = "INSERT INTO signatures (user_id, first_name, last_name, signature) VALUES ($1,$2,$3,$4)";
+
+        db.query(query, [id, data.firstname, data.lastname, data.signature]).then(() => {
+            resolve('success');
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        });
+    });
+};
+
+exports.updateProfile = (data, id) => {
+    return new Promise((resolve, reject) => {
+        var query = "UPDATE signatures SET first_name=$1, last_name=$2 WHERE user_id=$3";
+
+        db.query(query, [data.firstname, data.lastname, id]).then((message) => {
+            console.log(message);
+            resolve('success');
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        });
+    });
+};
+
+exports.updateOptionals = (data, id) => {
+    return new Promise((resolve, reject) => {
+        var query = "UPDATE user_profiles SET age=$1, city=$2, url=$3 WHERE user_id=$4";
+
+        db.query(query, [data.age, data.city, data.url, id]).then((message) => {
+            console.log(message);
+            resolve('success');
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        });
+    });
+};

@@ -19,7 +19,7 @@ app.use(cookieSession({
 }));
 
 /********************** ROUTES **********************/
-app.use(express.static(__dirname + '/public/'));
+app.use(express.static(__dirname + '/public'));
 app.use(router);
 
 app.listen(8080, () => console.log('-- Port: 8080 Initialised --'));
