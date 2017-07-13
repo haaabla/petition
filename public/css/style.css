@@ -89,11 +89,17 @@ form {
     justify-content: center;
 }
 
+::placeholder {
+    color: black;
+}
+
 input {
-    background-color: none;
+    background-color: #061AC6;
+    color: black;
     border: 0px;
     font-size: 3em;
     margin: 5px 0;
+    opacity: 0.2;
 }
 
 :focus {

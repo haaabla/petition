@@ -19,7 +19,7 @@ CREATE TABLE users (
 CREATE TABLE user_profiles (
     id SERIAL primary key,
     user_id INTEGER,
-    age INTEGER,
+    age VARCHAR,
     city VARCHAR (100),
     url VARCHAR (120),
     timestamp TIMESTAMP default current_TIMESTAMP

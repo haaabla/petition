@@ -24,12 +24,38 @@ exports.insertProfile = (id, data) => {
     });
 };
 
+exports.checkIfSigned = (id) => {
+    return new Promise((resolve, reject) => {
+        var query = "SELECT signature FROM signatures WHERE user_id=$1";
+
+        db.query(query, [id]).then((result) => {
+            resolve(result.rowCount);
+        }).catch((error) => {
+            console.log('5     inside checkIfSigned PROMISE ', error);
+            reject(error);
+        });
+    });
+};
+
 exports.signPetition = (id, data) => {
     return new Promise((resolve, reject) => {
         var query = "INSERT INTO signatures (user_id, signature) VALUES ($1,$2)";
 
         db.query(query, [id, data.signature]).then(() => {
             resolve('success');
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        });
+    });
+};
+
+exports.getProfileInfo = (id) => {
+    return new Promise((resolve, reject) => {
+        var query = "SELECT users.first_name, users.last_name, users.email, user_profiles.age, user_profiles.city, user_profiles.url FROM users LEFT JOIN user_profiles ON user_profiles.user_id = users.id WHERE users.id=$1";
+
+        db.query(query, [id]).then((info) => {
+            resolve(info.rows[0]);
         }).catch((error) => {
             console.log(error);
             reject(error);

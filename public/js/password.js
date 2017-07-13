@@ -16,16 +16,3 @@ exports.hashPassword = (plainTextPassword) => {
         });
     });
 };
-
-//COMPARE
-// exports.checkPassword = (textEnteredInLoginForm, hashedPasswordFromDatabase) => {
-//     return new Promise(function(resolve, reject) {
-//         bcrypt.compare(textEnteredInLoginForm, hashedPasswordFromDatabase, function(err, doesMatch) {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 resolve(doesMatch);
-//             }
-//         });
-//     });
-// };

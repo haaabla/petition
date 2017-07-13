@@ -6,6 +6,9 @@ const spicedPg = require('spiced-pg');
 const db = spicedPg(process.env.DATABASE_URL || 'postgres:postgres:password@localhost:5432/signaturesDB');
 const bcrypt = require('bcryptjs');
 
+const csrf = require('csurf');
+router.use(csrf({ cookie: true }));
+
 /********************** RE-DIRECTING **********************/
 router.use((req, res, next) => {
     if (!req.session.user) {
@@ -16,10 +19,14 @@ router.use((req, res, next) => {
         }
     }
     else if (req.url == '/petition' && req.session.user.signed == true) {
+        console.log('Re-directed through /register+login ------> thanks');
+        console.log(req.session.user);
         res.redirect('/thanks');
     }
     else {
         if (req.url == '/register' || req.url == '/login') {
+            console.log('Re-directed through /register+login ------> thanks');
+            console.log(req.session.user);
             res.redirect('/thanks');
         } else {
             next();
@@ -70,12 +77,6 @@ router.route('/onboard')
     })
 
     .post((req, res) => {
-        // if (!req.body.age.length) {
-        //     req.body.age = null;
-        // }
-        req.session.user.age = req.body.age;
-        req.session.user.city = req.body.city;
-        req.session.user.url = req.body.url;
         sqlQuery.insertProfile(req.session.user.id, req.body).then((message) => {
             console.log(message);
             res.redirect('/petition');
@@ -100,17 +101,28 @@ router.route('/login')
                     console.log('Login / Password does not match');
                     res.render('layouts/login', {
                         layout: 'main-layout-template',
-                        incorrect: 'Incorrect password ;/'
+                        incorrect: 'Incorrect password ;/',
+                        csrfToken: req.csrfToken()
                     });
                 }
                 else if (doesMatch){
+                    console.log('2   doesMatch before: reqBody: ', req.body);
                     req.session.user = {
+                        firstname: userInfo.rows[0].first_name,
+                        lastname: userInfo.rows[0].last_name,
                         id: userInfo.rows[0].id,
-                        firstname: userInfo.rows[0].firstname,
-                        lastname: userInfo.rows[0].lastname,
-                        email: userInfo.rows[0].email
+                        email: userInfo.rows[0].email,
+                        signed: undefined
                     };
-                    res.redirect('/petition');
+                    sqlQuery.checkIfSigned(userInfo.rows[0].id).then((result) => {
+                        if (result === 1) {
+                            req.session.user.signed = true;
+                            res.redirect('/thanks');
+                        } else {
+                            req.session.user.signed = false;
+                            res.redirect('/petition');
+                        }
+                    });
                 }
             });
         }).catch(function(error){
@@ -136,7 +148,6 @@ router.route('/petition')
         sqlQuery.signPetition(req.session.user.id, req.body)
         .then(() => {
             req.session.user.signed = true;
-            console.log(req.session.user);
             res.redirect('/thanks');
         }).catch((error) => {
             console.log(error);
@@ -153,7 +164,8 @@ router.route('/thanks')
                 res.render('layouts/thanks', {
                     layout: 'main-layout-template',
                     sigImg: results.rows[0].signature,
-                    count: resultcount
+                    count: resultcount,
+                    csrfToken: req.csrfToken()
                 });
             });
         });
@@ -175,22 +187,21 @@ router.route('/delete')
 /********************** EDIT PROFILE **********************/
 router.route('/profile/edit')
     .get((req, res) => {
-        db.query("SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.url FROM users LEFT JOIN user_profiles ON user_profiles.user_id = users.id")
-        .then(() => {
+        sqlQuery.getProfileInfo(req.session.user.id).then((info)=> {
             res.render('layouts/edit', {
                 layout: 'main-layout-template',
-                csrfToken: req.csrfToken(),
-                firstname: req.session.user.firstname,
-                lastname: req.session.user.lastname,
-                email: req.session.user.email,
-                age: req.session.user.age,
-                city: req.session.user.city,
-                url: req.session.user.url
+                info: info,
+                csrfToken: req.csrfToken()
             });
+        }).catch((error) => {
+            console.log('EDIT PROFILE: ', error);
         });
     })
 
     .post((req, res) => {
+        console.log('pooooooooooooosting');
+        console.log(req.body.password);
+        //put if statement if user has/hasn't entered new password
         password.hashPassword(req.body.password).then((hashed) => {
             sqlQuery.updateUser(req.body, req.session.user.id, hashed)
             .then(() => {
@@ -234,6 +245,12 @@ router.route('/signees/:city')
 
 router.get('/', (req, res) => {
     res.redirect('/petition');
+});
+
+router.get('/logout', function(req,res) {
+    console.log('Logging out user');
+    req.session.user = null;
+    res.redirect('/register');
 });
 
 module.exports = router;
