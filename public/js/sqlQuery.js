@@ -91,6 +91,19 @@ exports.updateOptionals = (data, id) => {
     });
 };
 
+exports.getSignature = (id) => {
+    return new Promise((resolve, reject) => {
+        var query = "SELECT signature FROM signatures WHERE user_id = $1";
+
+        db.query(query, [id]).then((results) => {
+            resolve(results.rows[0].signature);
+        }).catch((error) => {
+            console.log(error);
+            reject('getSignature: rejected');
+        });
+    });
+};
+
 exports.deleteSignature = (id) => {
     return new Promise((resolve, reject) => {
         var query = "DELETE FROM signatures WHERE user_id=$1";

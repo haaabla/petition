@@ -9,38 +9,25 @@ const bcrypt = require('bcryptjs');
 const csrf = require('csurf');
 router.use(csrf({ cookie: true }));
 
-/********************** RE-DIRECTING **********************/
-router.use((req, res, next) => {
-    if (!req.session.user) {
-        if (req.url != '/register' && req.url != '/login') {
-            res.redirect('/register');
-        } else {
-            next();
-        }
-    }
-    else if (req.url == '/petition' && req.session.user.signed == true) {
-        console.log('Re-directed through /register+login ------> thanks');
-        console.log(req.session.user);
-        res.redirect('/thanks');
-    }
-    else {
-        if (req.url == '/register' || req.url == '/login') {
-            console.log('Re-directed through /register+login ------> thanks');
-            console.log(req.session.user);
-            res.redirect('/thanks');
-        } else {
-            next();
-        }
-    }
-});
-
 /********************** REGISTER **********************/
 router.route('/register')
-    .get((req, res) => {
+    .get((req, res, next) => {
+        console.log('ROUTING: REGISTER');
+        if (req.session.user) {
+            console.log('ROUTING: REQ.SESSION.USER');
+            if (req.session.user.signed == true) {
+                console.log('ROUTING: .SIGNED == TRUE');
+                res.redirect('/thanks');
+            } else if (req.session.user.signed == false) {
+                console.log('ROUTING: .SIGNED == FALSE');
+                res.redirect('/petition');
+            }
+        } else {
         res.render('layouts/register', {
             layout: 'main-layout-template',
             csrfToken: req.csrfToken()
         });
+        }
     })
 
     .post((req, res) => {
@@ -98,7 +85,6 @@ router.route('/login')
         .then(function(userInfo){
             bcrypt.compare(req.body.password, userInfo.rows[0].password, function(err, doesMatch) {
                 if(!doesMatch) {
-                    console.log('Login / Password does not match');
                     res.render('layouts/login', {
                         layout: 'main-layout-template',
                         incorrect: 'Incorrect password ;/',
@@ -106,7 +92,6 @@ router.route('/login')
                     });
                 }
                 else if (doesMatch){
-                    console.log('2   doesMatch before: reqBody: ', req.body);
                     req.session.user = {
                         firstname: userInfo.rows[0].first_name,
                         lastname: userInfo.rows[0].last_name,
@@ -159,11 +144,11 @@ router.route('/petition')
 router.route('/thanks')
     .get((req, res) => {
         sqlQuery.countSignees().then((resultcount) => {
-            db.query('SELECT signature FROM signatures WHERE user_id = $1', [req.session.user.id])
+            sqlQuery.getSignature(req.session.user.id)
             .then((results) => {
                 res.render('layouts/thanks', {
                     layout: 'main-layout-template',
-                    sigImg: results.rows[0].signature,
+                    sigImg: results,
                     count: resultcount,
                     csrfToken: req.csrfToken()
                 });
@@ -177,6 +162,7 @@ router.route('/delete')
     .post((req, res) => {
         sqlQuery.deleteSignature(req.session.user.id)
         .then((message) => {
+            req.session.user.signed = false;
             res.redirect('/petition');
         }).catch((error) => {
             console.log(error);
@@ -201,7 +187,7 @@ router.route('/profile/edit')
     .post((req, res) => {
         console.log('pooooooooooooosting');
         console.log(req.body.password);
-        //put if statement if user has/hasn't entered new password
+        //put if statement if user has/hasn't entered new password password.length....
         password.hashPassword(req.body.password).then((hashed) => {
             sqlQuery.updateUser(req.body, req.session.user.id, hashed)
             .then(() => {
@@ -243,13 +229,15 @@ router.route('/signees/:city')
     })
 ;
 
-router.get('/', (req, res) => {
-    res.redirect('/petition');
-});
-
+/********************** LOGOUT **********************/
 router.get('/logout', function(req,res) {
     console.log('Logging out user');
     req.session.user = null;
+    res.redirect('/register');
+});
+
+/********************** IF ALL OTHER RE-ROUTING FAILS **********************/
+router.get('*', (req, res) => {
     res.redirect('/register');
 });
 
