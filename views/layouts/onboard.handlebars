@@ -1,10 +1,12 @@
-<p>Onboard</p>
+<main>
+    <h2>About</h2>
 
-<form id="onboard" name="onboard" method="POST">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <input data="age" type="text" name="age" placeholder="Age">
-    <input data="city" type="text" name="city" placeholder="City">
-    <input data="url" type="text" name="url" placeholder="Website">
-    <br>
-    <input id="button" type="submit" value="Continue">
-</form>
+    <form id="onboard" name="onboard" method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <input data="age" type="text" name="age" placeholder="Age">
+        <input data="city" type="text" name="city" placeholder="City">
+        <input data="url" type="text" name="url" placeholder="Website">
+        <br>
+        <input id="submit" type="submit" value="Continue">
+    </form>
+</main>

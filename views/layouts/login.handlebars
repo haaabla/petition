@@ -1,10 +1,16 @@
-<p>Login</p>
+<main>
+    <h2>Save The Reef</h2>
 
-<div class="warning"><h3>{{incorrect}}</div>
+    <div class="introduction">
+        <p>The oceans are dying at an alarming rate. Yada yada. Beautiful world. Let's do this. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. If we want our kids to see what we have been able to see for all these years let's join forces and bring back the color!
+        </p>
+    </div>
 
-<form id="login" name="login" method="POST">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <input type="text" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <input id="button" type="submit" value="Submit">
-</form>
+    <form id="login" name="login" method="POST">
+        <div class="warning"><h3>{{incorrect}}</div>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <input type="text" name="email" placeholder="Email" required autofocus>
+        <input type="password" name="password" placeholder="Password" required>
+        <input id="submit" type="submit" value="Login">
+    </form>
+</main>

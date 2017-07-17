@@ -9,6 +9,7 @@ if (canvas) {
         $('#canvas').on('mousemove', function(e){
             context.lineTo(e.offsetX, e.offsetY);
             context.stroke();
+            context.strokeStyle="#34B4C5";
         }).on('mouseup', function(){
             $('#canvas').off('mousemove');
             $('#hiddencanvas').val(canvas.toDataURL());

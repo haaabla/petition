@@ -3,103 +3,279 @@
     margin: 0;
 }
 
-body {
-    background: linear-gradient(180deg, blue, darkblue);
-}
-
 #wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
-
-footer {
-    width: 100%;
-    height: 100px;
-}
-
-p {
-    font-size: 2em;
-    color: white;
-    max-width: 800px;
-}
-
-/* WARNING MESSAGE */
-.warning {
-    font-size: 3em;
-    color: red;
-    padding: 10px;
-}
-
-/* NAV */
-nav {
-    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 30px 0px 0px 0px;
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/********************** GENERAL SETTINGS **********************/
+h1 {
+    font-family: 'Lemonada';
+    font-size: 2.5em;
+    color: white;
+    line-height: 1;
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Lemonada';
+    padding: 60px 20px 20px 20px;
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+}
+
+h3 {
+    font-family: 'Lemonada';
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+}
+
+p {
+    font-family: Helvetica;
+    line-height: 1.6;
+    font-size: 1em;
+    color: #4180BF;
+    max-width: 800px;
+}
+
+a {
+    color: #2AAA95;
+    text-decoration: none;
+    font-family: Helvetica;
+}
+
+::selection {
+    background-color: #E67E2E;
+    color: white;
+}
+
+/********************** BACKGROUND & SLIDER **********************/
+#title {
+    /*font-family: 'Chewy', cursive;*/
+    font-family: 'Coming Soon', cursive;
+    /*font-family: 'Amatic SC', cursive;*/
+    letter-spacing: 0.3rem;
+    text-transform: capitalize;
+    color: #092B3B;
+    font-size: 3em;
+    position: absolute;
+    z-index: 1;
+    margin-top: 200px;
+    text-align: center;
+    pointer-events: none;
+}
+
+#slider {
+    background-color: white;
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+    opacity: 0.5;
+}
+
+#color, #blackwhite {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#color {
+    background-image: url('/images/final_color.png');
+    z-index: 2;
+}
+
+#blackwhite {
+    background-image: url('/images/final_dead.png');
+    z-index: 1;
+}
+
+/********************** NAV **********************/
+nav {
+    width: 100%;
+    margin-top: 220px;
+    z-index: 5;
 }
 
 ul {
     display: flex;
     flex-direction: column;
+    padding-left: 0px;
+    padding-top: 50px;
+}
+
+ul.navigation a {
+    color: yellow;
+    text-decoration: none;
 }
 
 li {
-    list-style: none;
+    color: #5B749C;
+    list-style-type: square;
     text-decoration: none;
     font-size: 1.5em;
-    margin-left: 40px;
     text-transform: capitalize;
-    font-family: 'Merriweather';
+    padding-bottom: 20px;
 }
 
 .logo h1, .logo {
     text-decoration: none;
 }
 
-a {
-    color: green;
+.logo {
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
+/********************** SIGNEES **********************/
 .signee-list a, h3 {
     font-weight: 400;
     font-size: 1.2em;
-    font-family: monospace;
+    font-family: Helvetica;
 }
 
-.thanks-links {
-    text-decoration: underline;
+#delete-sig, .thanks-links {
+    font-family: 'Helvetica';
+    text-decoration: none;
     color: yellow;
-    margin-top: 20px;
+    margin-top: 0px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 1px solid #40397A;
+    background: none;
+    font-size: 20px;
 }
 
-/* CONTENT */
+.thanks-links:hover {
+    color: white;
+    transition: 0.75s;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+}
+
+#delete-sig:hover {
+    color: white;
+    text-decoration: line-through;
+    transition: 0.75s;
+}
+
+/********************** MAIN **********************/
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 400px;
+    z-index: 11;
+    background-color: #40397A;
+    height: 100vh;
+    opacity: 0.6;
+    transition: opacity 1.4s;
+    right: 0px;
+    position: absolute;
 }
 
+main:hover {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+/********************** REGISTER **********************/
+.introduction {
+    padding: 20px 35px 0 35px;
+}
+
+/********************** VIEW ALL SIGNEES **********************/
+main.view-all:hover {
+    opacity: 1;
+}
+
+.view-all {
+    width: 90%;
+    animation: 1.5s ease-out 0s 1 slideInFromRight;
+    opacity: 1;
+}
+
+.close {
+    width: 90%;
+    animation: 1.5s ease-out 0s 1 slideAway;
+    opacity: 1;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideAway {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+.x {
+    max-width: 45px;
+    left: 40px;
+    top: 25px;
+    font-size: 2em;
+    position: absolute;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+/********************** CANVAS **********************/
+#canvas {
+    background-color: #9AD0CB;
+    margin-top: 30px;
+    border: 4px solid #4E60A6;
+}
+
+/********************** FORMS **********************/
 form {
-    padding-top: 50px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    z-index: 10;
 }
 
 ::placeholder {
-    color: black;
+    color: #5B749C;
 }
 
 input {
-    background-color: #061AC6;
-    color: black;
-    border: 0px;
-    font-size: 3em;
-    margin: 5px 0;
-    opacity: 0.2;
+    padding: 5px;
+    color: white;
+    border: 1px solid #5B749C;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    width: 300px;
+    opacity: 0.8;
+    background: none;
+}
+
+input:required {
+
 }
 
 :focus {
@@ -107,35 +283,27 @@ input {
   outline-style: none;
 }
 
-/* LIST PROJECTS */
-h1 {
+#submit {
+    font-size: 1em;
+    border: none;
+    margin-top: 40px;
+    background-color: orange;
+    border-radius: 20px;
+    width: 100px;
+    align-self: center;
     font-family: 'Lemonada';
-    margin: 60px 0;
-    font-size: 2.5em;
-    color: white;
-    text-transform: capitalize;
-    line-height: 1;
-    text-align: center;
+    cursor: pointer;
+    transition: 1.0s;
 }
 
-/* PROJECTS PAGE */
-h2 {
-    font-size: 3em;
-    color: #56c5e3;
-    margin: 30px 0 30px 0;
-    font-family: 'Merriweather';
+#submit:hover {
+    transition: 1.0s;
+    background-color: #F9CA4D;
 }
 
-/* VIEW */
-
-.screenshot-image {
-    max-width: 800px;
-    align-items: center;
-}
-
-.view {
-    margin-top: -20px;
-    color: blue;
-    text-decoration: underline;
-    font-family: 'Merriweather';
+/********************** WARNING MESSAGE **********************/
+.warning {
+    font-size: 1em;
+    color: yellow;
+    padding: 10px;
 }

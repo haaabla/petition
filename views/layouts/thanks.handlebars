@@ -1,14 +1,14 @@
-<p>Thanks for signing the petition!</p>
+<main>
+    <h2>Thank You</h2>
 
-<a class="thanks-links" href="/signees">View {{count}} signees</a>
+    <img src="{{sigImg}}" alt="">
 
-<a class="thanks-links" href="/profile/edit">Edit your profile</a>
-
-<form action="/delete" method="POST">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button id="delete-sig" class="thanks-links">Delete Signature</button>
-</form>
-
-<img src="{{sigImg}}" alt="">
-
-<p> SHARE </p>
+    <form action="/delete" method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <button id="delete-sig" class="thanks-links">&nbsp;Remove Signature&nbsp;</button>
+    </form>
+    <br>
+    <a class="thanks-links" href="/profile/edit">&nbsp;Edit Profile&nbsp;</a>
+    <br>
+    <a id="view-signees-button" class="thanks-links" href="/signees">&nbsp;View All Signees <span style="color: orange">({{count}})&nbsp;</span></a>
+</main>

@@ -5,12 +5,14 @@
     </head>
     <body>
     <div id="wrapper">
+        <div id="color"></div>
+        <div id="blackwhite"></div>
+        <div id="slider"></div>
         {{> nav}}
-        <main>
-            {{{body}}}
-        </main>
-        {{> footer}}
+        {{{body}}}
+
     </div>
     <script src="/js/canvas.js" charset="utf-8"></script>
+    <script src="/js/panes.js"></script>
     </body>
 </html>
