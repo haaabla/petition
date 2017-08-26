@@ -230,7 +230,7 @@ router.route('/signees/:city')
 ;
 
 /********************** LOGOUT **********************/
-router.get('/logout', function(req,res) {
+router.get('/logout', (req,res) => {
     console.log('Logging out user');
     req.session.user = null;
     res.redirect('/register');

@@ -24,4 +24,8 @@ $(document).ready(function() {
         close().delay();
     });
 
+    $('.view-signees-button').on('click', () => {
+        $('.view-all').css({ backgroundColor: 'tomato' })
+    })
+
 });

@@ -10,6 +10,7 @@
     position: relative;
     min-height: 100vh;
     overflow: hidden;
+    background-color: #1D3246;
 }
 
 /********************** GENERAL SETTINGS **********************/
@@ -36,6 +37,13 @@ h3 {
     text-align: center;
 }
 
+h5 {
+    font-family: Helvetica;
+    line-height: 1.6;
+    font-size: 1em;
+    color: #807DA9;
+}
+
 p {
     font-family: Helvetica;
     line-height: 1.6;
@@ -57,9 +65,7 @@ a {
 
 /********************** BACKGROUND & SLIDER **********************/
 #title {
-    /*font-family: 'Chewy', cursive;*/
     font-family: 'Coming Soon', cursive;
-    /*font-family: 'Amatic SC', cursive;*/
     letter-spacing: 0.3rem;
     text-transform: capitalize;
     color: #092B3B;
@@ -85,6 +91,7 @@ a {
     top: 0;
     left: 0;
     width: 100%;
+    max-width: 2430px;
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -110,8 +117,8 @@ nav {
 ul {
     display: flex;
     flex-direction: column;
-    padding-left: 0px;
     padding-top: 50px;
+    list-style: none;
 }
 
 ul.navigation a {
@@ -125,6 +132,8 @@ li {
     text-decoration: none;
     font-size: 1.5em;
     text-transform: capitalize;
+    padding-left: 10px;
+    margin-left: 40px;
     padding-bottom: 20px;
 }
 
@@ -208,7 +217,7 @@ main.view-all:hover {
 
 .close {
     width: 90%;
-    animation: 1.5s ease-out 0s 1 slideAway;
+    animation: 5.5s ease-out 0s 1 slideAway;
     opacity: 1;
 }
 

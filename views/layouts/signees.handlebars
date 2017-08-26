@@ -11,15 +11,8 @@
                 {{else}}
                     {{first_name}} {{last_name}}
                 {{/if}}
-                {{#if age}}
-                        ( {{age}}
-                {{else}}
-                    {{#if city}}
-                        (<a href="/signees/{{city}}">{{city}}</a>)
-                    {{/if}}
-                {{/if}}
-                {{#if city}},
-                    <a href="/signees/{{city}}">{{city}}</a>)
+                {{#if city}}
+                    <h5>{{city}}</h5>
                 {{else}}
                     {{#if age}}){{/if}}
                 {{/if}}
