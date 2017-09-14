@@ -2,7 +2,7 @@
 
 <h2>Challenge</h2>
 
-One week to create a petition of your choosing
+One week to create a petition of your choice
 
 <h2>Under the Hood</h2>
 
